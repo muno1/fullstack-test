@@ -1,7 +1,7 @@
-//Controller for incomes
 const Income = require('../models/income');
-const {NotFound, BadRequest } = require('../helpers/response');
-//Expose the create, getById, getAll, and delete methods
+const { NotFound, BadRequest } = require('../helpers/response');
+
+// Create a new income entry
 exports.create = async (req, res, next) => {
   try {
     const { amount, title } = req.body;
@@ -13,6 +13,7 @@ exports.create = async (req, res, next) => {
   }
 };
 
+// Get income by ID
 exports.getById = async (req, res, next) => {
   try {
     const income = await Income.findById(req.params.id);
@@ -25,6 +26,7 @@ exports.getById = async (req, res, next) => {
   }
 };
 
+// Get all incomes
 exports.getAll = async (req, res, next) => {
   try {
     const incomes = await Income.find();
@@ -34,6 +36,22 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
+// Update income by ID
+exports.update = async (req, res, next) => {
+  try {
+    const updatedData = req.body;
+    const income = await Income.findByIdAndUpdate(req.params.id, updatedData, { new: true });
+
+    if (!income) {
+      return next(NotFound());
+    }
+    return res.status(200).json(income);
+  } catch (err) {
+    return next(BadRequest(err.message));
+  }
+};
+
+// Delete income by ID
 exports.delete = async (req, res, next) => {
   try {
     const income = await Income.findByIdAndDelete(req.params.id);

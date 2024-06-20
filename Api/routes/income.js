@@ -7,13 +7,15 @@ const { validator } = require('../middlewares/validator');
 
 const router = express.Router();
 //Get and post on the / route
-router.route('/')
-  .get(isAuth,rbac('users', 'read:any'), controller.getAll)
-  .post(isAuth,rbac('users', 'create:any'),validator('income'), controller.create);
+router
+  .route('/')
+  .get(isAuth, rbac('users', 'read:any'), controller.getAll)
+  .post(isAuth, rbac('users', 'create:any'), validator('income'), controller.create);
 //Get and delete on the /:id route
-router.route('/:id')
-    .get(isAuth,rbac('users', 'read:any'),controller.getById)
-    .delete(isAuth,rbac('users', 'delete:any'),controller.delete);
-
+router
+  .route('/:id')
+  .get(isAuth, rbac('users', 'read:any'), controller.getById)
+  .delete(isAuth, rbac('users', 'delete:any'), controller.delete)
+  .patch(isAuth, rbac('users', 'update:any'), validator('income'), controller.update);
 //Export income router
 module.exports = router;
