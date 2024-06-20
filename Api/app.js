@@ -19,6 +19,7 @@ const { SendData, NotFound } = require('./helpers/response');
 const swaggerSpec = require('./helpers/swagger');
 const checkCompany = require('./middlewares/checkCompany');
 const { isAuth } = require('./middlewares/isAuth');
+const incomeRouter = require('./routes/income');
 
 const app = express();
 
@@ -64,6 +65,8 @@ fs.readdirSync(path.join(__dirname, '/routes'))
       );
     else app.use(`/${f}`, require(`./routes/${f}`));
   });
+//Endpoint of the income router
+app.use('/api/income', incomeRouter);
 
 app.all('*', (req, res, next) => next(NotFound()));
 
