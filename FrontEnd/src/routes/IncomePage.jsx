@@ -13,7 +13,7 @@ const IncomePage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [form] = Form.useForm();
-
+  // Handle get incomes from the server
   const handleGet = () => {
     Api.get('/api/income')
       .then(response => {
@@ -24,7 +24,7 @@ const IncomePage = () => {
         throw err;
       });
   };
-
+  // Handle post income to the server
   const handlePost = newData => {
     Api.post('/api/income', newData)
       .then(() => {
@@ -36,7 +36,7 @@ const IncomePage = () => {
         throw err;
       });
   };
-
+  // Handle delete income from the server
   const handleDelete = id => {
     Api.delete(`/api/income/${id}`)
       .then(() => {
@@ -48,7 +48,7 @@ const IncomePage = () => {
         throw err;
       });
   };
-
+  // Handle edit income on the server
   const handleEdit = (id, updatedData) => {
     Api.patch(`/api/income/${id}`, updatedData)
       .then(() => {
@@ -60,7 +60,7 @@ const IncomePage = () => {
         throw err;
       });
   };
-
+  // Show modal for editing income
   const showModal = record => {
     setCurrentRecord(record);
     form.setFieldsValue({
@@ -69,7 +69,7 @@ const IncomePage = () => {
     });
     setIsModalVisible(true);
   };
-
+  // Handle success for editing operation
   const handleSuccess = () => {
     form
       .validateFields()
@@ -82,16 +82,16 @@ const IncomePage = () => {
         throw err;
       });
   };
-
+  // Handle cancel for editing operation
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
   };
-
+  // Fetch incomes on component mount
   useEffect(() => {
     handleGet();
   }, []);
-
+  // Table columns
   const columns = [
     {
       title: 'Title',
@@ -140,7 +140,7 @@ const IncomePage = () => {
     }
   ];
 
-  // Custom validation function for amount > 0
+  // Validate only if amount is greater than 0
   const validateAmount = (rule, value) => {
     if (value > 0) {
       return Promise.resolve();
