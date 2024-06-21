@@ -6,6 +6,7 @@ import { t } from 'i18next';
 import Api from '../helpers/core/Api';
 import WrapperForm from '../components/core/controls/WrapperForm';
 import SubmitButton from '../components/core/controls/SubmitButton';
+import Filter from '../components/core/table/Filters';
 
 const IncomePage = () => {
   const submitButtonRef = useRef(null);
@@ -150,27 +151,10 @@ const IncomePage = () => {
 
   return (
     <div>
-      <WrapperForm form={form} onSubmit={handlePost} submitBtn={submitButtonRef}>
-        <Form.Item
-          name="title"
-          label="Title"
-          rules={[{ required: true, message: 'Please input the title of the item!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="amount"
-          label="Amount"
-          rules={[{ required: true, message: 'Please input the amount!' }, { validator: validateAmount }]}
-        >
-          <Input type="number" />
-        </Form.Item>
-        <SubmitButton iconPosition="end" ref={submitButtonRef} type="primary">
-          {t('common.save')}
-        </SubmitButton>
-      </WrapperForm>
-      <br />
-      <Table dataSource={data} columns={columns} rowKey="_id" />
+      <h2>Incomes</h2>
+      <Table dataSource={data} columns={columns} rowKey="_id">
+        <Filter filters={Filter} />
+      </Table>
 
       <Modal title="Edit Income" open={isModalVisible} onOk={handleSuccess} onCancel={handleCancel}>
         <Form form={form} layout="vertical" name="form_in_modal">
@@ -201,6 +185,26 @@ const IncomePage = () => {
           </Form.Item>
         </Form>
       </Modal>
+      <WrapperForm label="Incomes" form={form} onSubmit={handlePost} submitBtn={submitButtonRef}>
+        <h2>Add income</h2>
+        <Form.Item
+          name="title"
+          label="Title"
+          rules={[{ required: true, message: 'Please input the title of the item!' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="amount"
+          label="Amount"
+          rules={[{ required: true, message: 'Please input the amount!' }, { validator: validateAmount }]}
+        >
+          <Input type="number" />
+        </Form.Item>
+        <SubmitButton iconPosition="end" ref={submitButtonRef} type="primary">
+          {t('common.save')}
+        </SubmitButton>
+      </WrapperForm>
     </div>
   );
 };
