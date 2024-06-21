@@ -1,21 +1,26 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'antd';
+import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ContentPanel from '../components/core/layout/ContentPanel';
 import IncomePage from './IncomePage';
+import ExpensePage from './ExpensePage';
 
 const Home = () => {
   const [loading] = useState(false);
+  const [button, setButton] = useState(false);
+
   return (
     <ContentPanel
       titleAction={
-        <Button shape="round" type="primary">
-          Switch
+        <Button onClick={() => setButton(!button)} shape="circle" type="primary">
+          <FontAwesomeIcon icon={faExchangeAlt} />
         </Button>
       }
-      title="Fullstack Test"
+      title="Dashboard"
       loading={loading}
     >
-      <IncomePage />
+      {button ? <ExpensePage /> : <IncomePage />}
     </ContentPanel>
   );
 };
