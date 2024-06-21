@@ -20,6 +20,7 @@ const swaggerSpec = require('./helpers/swagger');
 const checkCompany = require('./middlewares/checkCompany');
 const { isAuth } = require('./middlewares/isAuth');
 const incomeRouter = require('./routes/income');
+const expenseRouter = require('./routes/expense');
 
 const app = express();
 
@@ -67,6 +68,8 @@ fs.readdirSync(path.join(__dirname, '/routes'))
   });
 //Endpoint of the income router
 app.use('/api/income', incomeRouter);
+//Endpoint of the expense router
+app.use('/api/expense', expenseRouter);
 
 app.all('*', (req, res, next) => next(NotFound()));
 
