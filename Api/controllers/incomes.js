@@ -4,8 +4,8 @@ const { NotFound, BadRequest } = require('../helpers/response');
 // Create a new income entry
 exports.create = async (req, res, next) => {
   try {
-    const { amount, title } = req.body;
-    const newIncome = new Income({ amount, title });
+    const { amount, title, date } = req.body;
+    const newIncome = new Income({ amount, title, date });
     const savedIncome = await newIncome.save();
     return res.status(201).json(savedIncome);
   } catch (err) {
