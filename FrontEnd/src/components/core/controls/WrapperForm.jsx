@@ -7,6 +7,37 @@ import MessageContext from '../../../helpers/core/MessageContext';
 const WrapperForm = ({ children, onSubmit, submitBtn, ...props }) => {
   const { loadingMsg, savedMsg, errorMsg } = useContext(MessageContext);
 
+  const onFinish = async data => {
+    const msg = loadingMsg();
+
+    submitBtn.current.loading(true);
+
+    try {
+      await onSubmit(data);
+      submitBtn.current?.loading(false);
+      savedMsg(msg);
+    } catch (err) {
+      submitBtn.current?.loading(false);
+      errorMsg(msg, err);
+    }
+  };
+
+  return (
+    <Form onFinish={onFinish} {...props}>
+      {children}
+    </Form>
+  );
+};
+
+export default WrapperForm;
+/* import { useContext } from 'react';
+import { Form } from 'antd';
+
+import MessageContext from '../../../helpers/core/MessageContext';
+
+const WrapperForm = ({ children, onSubmit, submitBtn, ...props }) => {
+  const { loadingMsg, savedMsg, errorMsg } = useContext(MessageContext);
+
   const onFinish = data => {
     const msg = loadingMsg();
 
@@ -30,4 +61,4 @@ const WrapperForm = ({ children, onSubmit, submitBtn, ...props }) => {
   );
 };
 
-export default WrapperForm;
+export default WrapperForm; */
