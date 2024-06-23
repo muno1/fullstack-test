@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Popconfirm, Tooltip, Button, message, Modal, Form, Input } from 'antd';
+import { Table, Popconfirm, Tooltip, Button, message, Modal, Form, Input, Alert, Space } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareMinus, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { t } from 'i18next';
@@ -7,17 +7,26 @@ import Api from '../helpers/core/Api';
 import WrapperForm from '../components/core/controls/WrapperForm';
 import SubmitButton from '../components/core/controls/SubmitButton';
 
-const ExpensePage = () => {
+const ExpensePage = ({ onTotalExpenseChange }) => {
   const submitButtonRef = useRef(null);
   const [data, setData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [form] = Form.useForm();
+
+  const totalAmount = () => {
+    const total = data.reduce((acc, item) => acc + item.amount, 0);
+    return total;
+  };
+  const totalExpenses = () => data.length;
+
   // Handle get incomes from the server
   const handleGet = () => {
     Api.get('/api/expense')
       .then(response => {
         setData(response.data);
+        const total = totalAmount();
+        onTotalExpenseChange(total);
       })
       .catch(err => {
         message.error('Failed to fetch data');
@@ -150,7 +159,11 @@ const ExpensePage = () => {
 
   return (
     <div>
-      <h2>Expenses</h2>
+      <Space>
+        <Alert message={`Total Expenses: ${totalAmount()}`} type="error" showIcon />
+        <Alert message={`Total Transactions: ${totalExpenses()}`} type="info" showIcon />
+        <br />
+      </Space>
       <Table dataSource={data} columns={columns} rowKey="_id" />
 
       <Modal title="Edit Expense" open={isModalVisible} onOk={handleSuccess} onCancel={handleCancel}>
