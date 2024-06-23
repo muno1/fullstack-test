@@ -1,30 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Popconfirm, Tooltip, Button, message, Modal, Form, Input } from 'antd';
+import { Table, Popconfirm, Tooltip, Button, message, Modal, Form, Input, Alert, Space } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareMinus, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { t } from 'i18next';
 import Api from '../helpers/core/Api';
 import WrapperForm from '../components/core/controls/WrapperForm';
 import SubmitButton from '../components/core/controls/SubmitButton';
-import Filter from '../components/core/table/Filters';
 
-const IncomePage = () => {
+const IncomePage = ({ onTotalAmountChange }) => {
   const submitButtonRef = useRef(null);
   const [data, setData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [form] = Form.useForm();
+
+  const totalAmount = () => {
+    const total = data.reduce((acc, item) => acc + item.amount, 0);
+    return total;
+  };
+  const totalIncomes = () => data.length;
+
   // Handle get incomes from the server
   const handleGet = () => {
     Api.get('/api/income')
       .then(response => {
         setData(response.data);
+        const total = totalAmount();
+        onTotalAmountChange(total);
       })
       .catch(err => {
         message.error('Failed to fetch data');
         throw err;
       });
   };
+
   // Handle post income to the server
   const handlePost = newData => {
     Api.post('/api/income', newData)
@@ -37,6 +46,7 @@ const IncomePage = () => {
         throw err;
       });
   };
+
   // Handle delete income from the server
   const handleDelete = id => {
     Api.delete(`/api/income/${id}`)
@@ -49,6 +59,7 @@ const IncomePage = () => {
         throw err;
       });
   };
+
   // Handle edit income on the server
   const handleEdit = (id, updatedData) => {
     Api.patch(`/api/income/${id}`, updatedData)
@@ -151,10 +162,13 @@ const IncomePage = () => {
 
   return (
     <div>
-      <h2>Incomes</h2>
-      <Table dataSource={data} columns={columns} rowKey="_id">
-        <Filter filters={Filter} />
-      </Table>
+      <Space>
+        <Alert message={`Total Balance: ${totalAmount()}`} type="success" showIcon />
+        <Alert message={`Total Transactions: ${totalIncomes()}`} type="info" showIcon />
+
+        <br />
+      </Space>
+      <Table dataSource={data} columns={columns} rowKey="_id" />
 
       <Modal title="Edit Income" open={isModalVisible} onOk={handleSuccess} onCancel={handleCancel}>
         <Form form={form} layout="vertical" name="form_in_modal">
