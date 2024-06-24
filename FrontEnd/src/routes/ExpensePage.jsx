@@ -160,7 +160,7 @@ const ExpensePage = (/* { onTotalExpenseChange } */) => {
   return (
     <div>
       <Space>
-        <Alert message={`Total Expenses: ${totalAmount()}`} type="error" showIcon />
+        <Alert message={`Total Expenses: -${totalAmount()}€`} type="error" showIcon />
         <Alert message={`Total Transactions: ${totalExpenses()}`} type="info" showIcon />
         <br />
       </Space>
