@@ -163,7 +163,7 @@ const IncomePage = (/* { onTotalAmountChange } */) => {
   return (
     <div>
       <Space>
-        <Alert message={`Total Balance: ${totalAmount()}`} type="success" showIcon />
+        <Alert message={`Total Balance: ${totalAmount()}€`} type="success" showIcon />
         <Alert message={`Total Transactions: ${totalIncomes()}`} type="info" showIcon />
 
         <br />
