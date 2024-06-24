@@ -7,7 +7,7 @@ import Api from '../helpers/core/Api';
 import WrapperForm from '../components/core/controls/WrapperForm';
 import SubmitButton from '../components/core/controls/SubmitButton';
 
-const IncomePage = ({ onTotalAmountChange }) => {
+const IncomePage = (/* { onTotalAmountChange } */) => {
   const submitButtonRef = useRef(null);
   const [data, setData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -25,8 +25,8 @@ const IncomePage = ({ onTotalAmountChange }) => {
     Api.get('/api/income')
       .then(response => {
         setData(response.data);
-        const total = totalAmount();
-        onTotalAmountChange(total);
+        /*  const total = totalAmount();
+        onTotalAmountChange(total); */
       })
       .catch(err => {
         message.error('Failed to fetch data');

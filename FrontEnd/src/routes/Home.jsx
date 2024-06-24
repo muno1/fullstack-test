@@ -9,7 +9,7 @@ import ExpensePage from './ExpensePage';
 const Home = () => {
   const [loading] = useState(false);
   const [button, setButton] = useState(false);
-  const [totalAmountIncome, setTotalAmountIncome] = useState(0);
+  /*  const [totalAmountIncome, setTotalAmountIncome] = useState(0);
   const [totalAmountExpense, setTotalAmountExpense] = useState(0);
 
   const handleTotalIncomeChange = amount => {
@@ -17,7 +17,7 @@ const Home = () => {
   };
   const handleTotalExpenseChange = amount => {
     setTotalAmountExpense(amount);
-  };
+  }; */
 
   return (
     <ContentPanel
@@ -30,9 +30,9 @@ const Home = () => {
       loading={loading}
     >
       {button ? (
-        <ExpensePage onTotalExpenseChange={handleTotalExpenseChange} />
+        <ExpensePage /* onTotalExpenseChange={handleTotalExpenseChange} */ />
       ) : (
-        <IncomePage onTotalAmountChange={handleTotalIncomeChange} />
+        <IncomePage /* onTotalAmountChange={handleTotalIncomeChange} */ />
       )}
     </ContentPanel>
   );
